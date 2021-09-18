@@ -19,7 +19,7 @@
       </div>
       <div class="flex flex-wrap -m-4">
         <div class="p-4 md:w-1/3">
-          <div class="flex rounded-lg h-full bg-gray-100 p-8 flex-col">
+          <div v-for="(index, x) in this.list" :key="x">class="flex rounded-lg h-full bg-gray-100 p-8 flex-col">
             <div class="flex items-center mb-3">
               <div
                 class="
@@ -48,7 +48,7 @@
                 </svg>
               </div>
               <h2 class="text-gray-900 text-lg title-font font-medium">
-                Shooting Stars
+                {{ index.name }}
               </h2>
             </div>
             <div class="flex-grow">
@@ -73,7 +73,7 @@
             </div>
           </div>
         </div>
-        <div class="p-4 md:w-1/3">
+        <!-- <div class="p-4 md:w-1/3">
           <div class="flex rounded-lg h-full bg-gray-100 p-8 flex-col">
             <div class="flex items-center mb-3">
               <div
@@ -187,7 +187,7 @@
               </a>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
@@ -207,7 +207,7 @@ export default {
   },
   methods: {
     clubs() {
-      this.list = this.$axios.get('http://127.0.0.1:8000/api/all-users')
+      this.list = this.$axios.get('/competitions')
     },
   },
 }

@@ -8,13 +8,8 @@
       <span class="ml-3 text-xl">Tailblocks</span>
     </a>
     <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
-        {{$auth.loggedIn}} 
-
-        ** 
-
-        {{$store.state.auth.loggedIn}}
       <div v-if="$auth.loggedIn">
-        <a class="mr-5 hover:text-white">Name</a>
+        <a class="mr-5 hover:text-white">{{ $auth.user.name}}</a>
         <a class="mr-5 hover:text-black">logout</a>
       </div>
       <div v-else>
