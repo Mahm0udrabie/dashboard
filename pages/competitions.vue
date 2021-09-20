@@ -212,21 +212,25 @@ export default {
     is_error: false,
     error: '',
   }),
-  created() {
-    this.competition()
+  async created() {
+    this.competition();
   },
   methods: {
     async addCompeition() {
+          this.is_error = false
       try {
         await this.$axios
           .post('/competitions', {
             name: this.name,
             status: this.status,
+          }).then((response) => {
+            this.competitions.unshift(response.data.data);
           })
           .catch((err) => {
             this.is_error = true
             this.error = err.response.data.errors.name[0]
           })
+            
       } catch (err) {
         console.log(err)
       }
