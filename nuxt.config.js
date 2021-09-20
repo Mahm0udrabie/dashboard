@@ -25,32 +25,19 @@ export default {
 
 
 
+
   auth: {
     strategies: {
       local: {
-        token: {
-          property: 'token',
-          global: true,
-          // required: true,
-          // type: 'Bearer'
-        },
-        user: {
-          property: 'user',
-          // autoFetch: true
-        },
         endpoints: {
-          login: {
-            url: "login",
-            method: "post",
-            propertyName: "data.data.token"
-          },
-          user: {
-            url: "/login",
-            method: "post",
-            propertyName: "data.data"
-          },
-          logout: true
-        }
+          login: { url: '/login', method: 'post', propertyName: 'token' },
+          logout: { url: '/logout', method: 'post' },
+          user: false
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer',
+        globalToken: true
+        // autoFetchUser: true
       }
     }
   },
@@ -67,8 +54,7 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss',
-    '@nuxtjs/universal-storage',
+    '@nuxtjs/tailwindcss'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -76,6 +62,8 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    '@nuxtjs/universal-storage'
+
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

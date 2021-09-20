@@ -23,7 +23,24 @@
       >
         <p class="text-3xl text-center">Welcome.</p>
         <form class="flex flex-col pt-3 md:pt-8" method="post">
-          <p v-if="error">username or password are incorrect</p>
+          <div
+            v-if="status"
+            class="
+              bg-red-100
+              border border-red-400
+              text-red-700
+              px-4
+              py-3
+              rounded
+              relative
+            "
+            role="alert"
+          >
+            <strong class="font-bold">Opps! </strong>
+            <span class="block sm:inline"
+              >username or password are incorrect</span
+            >
+          </div>
           <div class="flex flex-col pt-4">
             <div class="flex relative">
               <span
@@ -148,16 +165,15 @@
               focus:ring-2
             "
             @click.prevent="login"
-           
           >
-            <span class="w-full"> Submit </span>
+            <span class="w-full"> Login </span>
           </button>
         </form>
         <div class="pt-12 pb-12 text-center">
-          <p>
+          <!-- <p>
             Don&#x27;t have an account?
             <a href="#" class="font-semibold underline"> Register here. </a>
-          </p>
+          </p> -->
         </div>
       </div>
     </div>
@@ -173,50 +189,37 @@
 <script>
 export default {
   name: 'Login',
-   layout: 'guest',
-   middleware: 'guest',
+  layout: 'guest',
+  middleware: 'guest',
   data: () => ({
     email: null,
     password: null,
-    error: false,
+    status: false,
   }),
   computed: {
     // eslint-disable-next-line vue/return-in-computed-property
-    userLogged() {
-      // return this.$store.getters.userLogged;
-    },
+    // userLogged() {
+    //   // return this.$store.getters.userLogged;
+    // },
   },
   methods: {
-     login() {
+       login() {
        console.log("hello world login");
        this.$auth.loginWith('local', { data: {
           email: this.email,
           password: this.password,
         } }).then((res) => {
           // eslint-disable-next-line no-console
-            console.log(res)
           if (res && res.data && res.data.data.token) {
             this.$auth.strategy.token.set(res.data.data.token)
+            this.$auth.$storage.setUniversal('user', res.data.data, true)
             this.$auth.setUser(res.data.data)
-
-            console.log('this.$auth.user', this.$auth.user);
-            console.log('this.$auth.loggedIn', this.$auth.loggedIn);
-
-
-            // this.$store.commit('changeUserLogged', true);
-            // localStorage.setItem('token', res.data.data.token);
-            // localStorage.setItem('data', res.data.data.username);
-            // localStorage.setItem('channel', res.data.data.channel);
-            // this.$router.push('/');
-         
+            
           }
-        })
-        // eslint-disable-next-line node/handle-callback-err
-        .catch((error) => {
-          console.log("error", error);
-          this.$store.commit('changeUserLogged', false)
-          this.error = true
-        })
+          }).catch((err) => {
+            console.log(err);
+            this.status = true
+          });
     },
   },
 }
