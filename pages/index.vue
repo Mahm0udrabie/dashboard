@@ -2,7 +2,12 @@
   <section class="text-gray-600 body-font">
     <div class="container px-5 py-24 mx-auto">
       <div class="flex flex-col text-center w-full mb-20">
-      <button v-if="role" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Create</button>
+      <NuxtLink
+       to="competitions"
+       v-if="$store.$storage.getUniversal('auth.user').role_name === 'superadministrator'"
+       class="w-1/6 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+       Create
+       </NuxtLink>
         <h2
           class="
             text-xs text-indigo-500
@@ -75,7 +80,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </section>
@@ -88,22 +92,12 @@ export default {
   middleware: 'authentication',
   data: () => ({
     competitions: [],
-    role: false
+    
   }),
   created() {
     this.competition();
-    this.logged();
-         console.log(this.$store.$storage.getUniversal('role'));
   },
   methods: {
-    logged() {
-      this.res = this.$axios.get('/user').then((response) => {
-        this.user = response.data.data;
-        if(this.user.role_name === 'superadministrator') {
-          this.role = true
-        }
-      });
-    },
     competition() {
       this.res = this.$axios.get('http://127.0.0.1:8000/api/competitions').then((response) => {
         this.competitions = response.data.data;

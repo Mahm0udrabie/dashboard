@@ -1,26 +1,48 @@
 <template>
   <div>
     <section class="text-gray-600 body-font">
-      <div class="container px-5 py-24 mx-auto">
-        <div class="flex flex-col text-center w-full mb-12">
-          <h1
+      <div
+        class="
+          container
+          mx-auto
+          flex flex-col
+          px-5
+          py-24
+          justify-center
+          items-center
+        "
+      >
+        <img
+          class="
+            lg:w-2/6
+            md:w-3/6
+            w-5/6
+            mb-10
+            object-cover object-center
+            rounded
+          "
+          alt="hero"
+          src="https://dummyimage.com/720x600"
+        />
+        <div
+          class="w-full md:w-2/3 flex flex-col mb-16 items-center text-center"
+        >
+        <!-- eslint-disable-next-line vue/valid-v-model -->
+          <p
+          v-text="competition"
             class="
-              sm:text-3xl
-              text-2xl
-              font-medium
               title-font
+              sm:text-4xl
+              text-3xl
               mb-4
+              font-medium
               text-gray-900
             "
           >
-            Add New Competition
-          </h1>
-          <p class="lg:w-2/3 mx-auto leading-relaxed text-base">
-            Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical
-            gentrify, subway tile poke farm-to-table. Franzen you probably
-            haven't heard of them man bun deep.
           </p>
-        </div>
+
+          <div class=" flex flex-col text-center w-full">
+              <!-- flex flex-col  w-full mb-12 -->
         <div
           v-if="is_error"
           class="
@@ -120,80 +142,11 @@
               rounded
               text-lg
             "
-            @click.prevent="addCompeition"
+            @click.prevent="update"
           >
-            Create
+            Update
           </button>
         </div>
-      </div>
-      <div class="container px-5 py-24 mx-auto">
-        <div class="flex flex-wrap -m-4">
-          <div v-for="(index, x) in competitions" :key="x" class="p-4 md:w-1/3">
-            <div class="flex rounded-lg h-full bg-gray-100 p-8 flex-col">
-              <div class="flex items-center mb-3">
-                <div
-                  class="
-                    w-8
-                    h-8
-                    mr-3
-                    inline-flex
-                    items-center
-                    justify-center
-                    rounded-full
-                    bg-indigo-500
-                    text-white
-                    flex-shrink-0
-                  "
-                >
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    class="w-5 h-5"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                  </svg>
-                </div>
-                <h2 class="text-gray-900 title-font font-medium">
-<!--                 
-                   :to="{ name: 'competition?id', params: { id: index.id }}"      
-                class="mr-5 hover:text-gray">{{ index.name  }} -->
-                <NuxtLink 
-              
-                          :to="{
-                  path: 'competition',
-                  query: {
-                    id:index.id ,
-                  },
-                }">
-                {{ index.name}}
-                </NuxtLink>
-                </h2>
-              </div>
-              <!-- <div class="flex-grow">
-              <p class="leading-relaxed text-base">
-                Blue bottle crucifix vinyl post-ironic four dollar toast vegan
-                taxidermy. Gastropub indxgo juice poutine.
-              </p>
-              <a class="mt-3 text-indigo-500 inline-flex items-center"
-                >Learn More
-                <svg
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  class="w-4 h-4 ml-2"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7"></path>
-                </svg>
-              </a>
-            </div> -->
-            </div>
           </div>
         </div>
       </div>
@@ -203,23 +156,31 @@
 
 <script>
 export default {
-  name: 'Compeition',
   middleware: ['authentication', 'admin'],
   data: () => ({
-    competitions: [],
+    competitionId: '',
+    competition: '',
     name: null,
     status: 1,
     is_error: false,
     error: '',
   }),
-  created() {
-    this.competition()
+  mounted() {
+      this.competitionId = this.$route.query.id
+      this.show();
   },
+ 
   methods: {
-    async addCompeition() {
-      try {
-        await this.$axios
-          .post('/competitions', {
+      show() {
+          console.log('/competitions/'+this.competitionId);
+          this.$axios.get('/competitions/'+this.competitionId).then((response) => {
+              this.competition = response.data.data.name;
+          });
+          
+      },
+    update() {
+          console.log('/competitions/'+this.competitionId);
+          this.$axios.post('/competitions/'+this.competitionId+'/update', {
             name: this.name,
             status: this.status,
           })
@@ -227,17 +188,8 @@ export default {
             this.is_error = true
             this.error = err.response.data.errors.name[0]
           })
-      } catch (err) {
-        console.log(err)
-      }
-    },
-    competition() {
-      this.res = this.$axios
-        .get('http://127.0.0.1:8000/api/competitions')
-        .then((response) => {
-          this.competitions = response.data.data
-        })
-    },
-  },
+        //   redirect('/competitions')
+    }
+  }
 }
 </script>
