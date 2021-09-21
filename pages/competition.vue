@@ -29,7 +29,6 @@
         >
         <!-- eslint-disable-next-line vue/valid-v-model -->
           <p
-          v-text="competition"
             class="
               title-font
               sm:text-4xl
@@ -38,6 +37,8 @@
               font-medium
               text-gray-900
             "
+          v-text="name"
+
           >
           </p>
 
@@ -80,9 +81,10 @@
             >
             <input
               id="name"
-              v-model="name"
+              
               type="text"
               name="name"
+              v-model="name"
               class="
                 w-full
                 bg-gray-100 bg-opacity-50
@@ -159,7 +161,6 @@ export default {
   middleware: ['authentication', 'admin'],
   data: () => ({
     competitionId: '',
-    competition: '',
     name: null,
     status: 1,
     is_error: false,
@@ -174,7 +175,7 @@ export default {
       show() {
           console.log('/competitions/'+this.competitionId);
           this.$axios.get('/competitions/'+this.competitionId).then((response) => {
-              this.competition = response.data.data.name;
+              this.name = response.data.data.name;
           });
           
       },

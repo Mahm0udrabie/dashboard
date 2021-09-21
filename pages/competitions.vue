@@ -161,7 +161,13 @@
 <!--                 
                    :to="{ name: 'competition?id', params: { id: index.id }}"      
                 class="mr-5 hover:text-gray">{{ index.name  }} -->
-                <NuxtLink 
+                {{ index.name}}
+                </h2>
+                <div 
+              class="ml-40 flex p-3"
+                
+                >
+                  <NuxtLink 
               
                           :to="{
                   path: 'competition',
@@ -169,9 +175,22 @@
                     id:index.id ,
                   },
                 }">
-                {{ index.name}}
+                edit 
+                
                 </NuxtLink>
-                </h2>
+                <NuxtLink 
+                class="ml-1"
+                :to="{
+                  path: 'competition',
+                  query: {
+                    id:index.id ,
+                  },
+                }">
+                delete
+                </NuxtLink>
+
+                </div>
+              
               </div>
               <!-- <div class="flex-grow">
               <p class="leading-relaxed text-base">
@@ -212,7 +231,7 @@ export default {
     is_error: false,
     error: '',
   }),
-  async created() {
+  created() {
     this.competition();
   },
   methods: {

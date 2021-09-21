@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'dashboard2',
+    title: 'dashboard',
     htmlAttrs: {
       lang: 'en'
     },
@@ -54,17 +54,30 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/fontawesome',
+
+    
+
   ],
+  fontawesome: { 
+    component: 'fa',
+    icons: {
+      solid:true,
+      brands:true,
+    }
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
-    '@nuxtjs/universal-storage'
-
+    '@nuxtjs/universal-storage',
+    '@nuxtjs/fontawesome',
   ],
+
+
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
