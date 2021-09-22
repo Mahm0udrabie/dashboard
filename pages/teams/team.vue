@@ -198,6 +198,7 @@
                 <p class="text-gray-500">{{ member.role_name }}</p>
                 <p class="text-gray-500">{{ member.email }}</p>
                 <button
+                v-if="$store.$storage.getUniversal('auth.user').role_name === 'superadministrator' || $store.$storage.getUniversal('auth.user').name === team.username"
                 class="
                   text-red-500
                   bg-white-500
