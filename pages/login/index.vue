@@ -156,7 +156,7 @@
             Don&#x27;t have an account?
             
           </p>
-          <a herf="register" class=""> Register here.</a>
+          <NuxtLink to="/register" >Register here</NuxtLink>
         </div>
       </div>
     </div>

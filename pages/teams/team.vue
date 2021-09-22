@@ -317,7 +317,7 @@ update() {
               this.members.splice(i, 1)
             }
           }
-          this.toaster('success', response.data.status)
+        this.toaster('success', response.data.status)
         })
     }
   },
