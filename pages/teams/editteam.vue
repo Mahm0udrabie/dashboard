@@ -249,7 +249,7 @@
 <script>
 export default {
   name: 'EditTeam',
-  middleware: ['authentication', 'admin'],
+  middleware: ['authentication', 'admin', 'normal_admin'],
   data: () => ({
     members: [],
     teamdId: '',

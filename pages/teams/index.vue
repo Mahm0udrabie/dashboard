@@ -2,7 +2,9 @@
   <div>
     <section class="text-gray-600 body-font">
       <div class="container px-5 py-24 mx-auto">
-        <div class="container px-5 py-24 mx-auto">
+        <div 
+        v-if="$store.$storage.getUniversal('auth.user').role_name ==='superadministrator' || $store.$storage.getUniversal('auth.user').role_name ==='administrator'"
+        class="container px-5 py-24 mx-auto">
           <div class="flex flex-col text-center w-full mb-12">
             <h1
               class="
@@ -80,6 +82,20 @@
           </div>
         </div>
         <div class="flex flex-wrap -m-4">
+                    <div class="flex flex-col text-center w-full mb-12">
+            <h1
+              class="
+                sm:text-3xl
+                text-2xl
+                font-medium
+                title-font
+                mb-4
+                text-gray-900
+              "
+            >
+              Teams
+            </h1>
+          </div>
           <div
             v-for="(team, index) in teams"
             :key="index"
@@ -115,11 +131,39 @@
                 <h2
                   class="text-lg text-gray-900 font-medium title-font mb-2 ml-5"
                 >
-                  {{ team.name }}
+                  <NuxtLink
+                :to="{
+                  path: 'teams/team',
+                  query: {
+                    id: team.id,
+                  },
+                }"
+              >
+              {{ team.name }}
+              </NuxtLink>
                 </h2>
               </div>
             </div>
-            <div class="flex p-3">
+            <div 
+               v-if="$store.$storage.getUniversal('auth.user').role_name ==='superadministrator' "
+            class="flex p-3">
+              <NuxtLink
+                :to="{
+                  path: 'teams/editteam',
+                  query: {
+                    id: team.id,
+                  },
+                }"
+              >
+                <fa icon="edit" class="text-blue-300" />
+              </NuxtLink>
+              <button class="ml-1" @click.prevent="removeTeam(team)">
+                <fa icon="trash" class="text-red-500" />
+              </button>
+            </div>
+            <div 
+               v-if="$store.$storage.getUniversal('auth.user').role_name ==='administrator' && team.user_id === $store.$storage.getUniversal('auth.user').id"
+            class="flex p-3">
               <NuxtLink
                 :to="{
                   path: 'teams/editteam',
@@ -144,7 +188,7 @@
 <script>
 export default {
   name: 'Teams',
-  middleware: ['authentication', 'admin'],
+  middleware: 'authentication',
   data: () => ({
     teams: [],
     competitionId: '',
@@ -172,10 +216,16 @@ export default {
             competition_id: this.competitionId,
           })
           .then((response) => {
-            this.teams.unshift(response.data.data)
+            if(response.data.data.status === 1)
+              {
+                this.teams.unshift(response.data.data)
+                this.toaster('success', response.data.status)
+              } else {
+                this.toaster('info', 'Admin will review your team soon')
+              }
           })
           .catch((err) => {
-            this.toaster('error', err.response.data.status)
+            this.toaster('error', err.response.data.message)
             console.log(err)
           })
       } catch (err) {}

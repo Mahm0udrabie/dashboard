@@ -9,7 +9,7 @@
     </NuxtLink>
       <NuxtLink
        v-if="$store.$storage.getUniversal('auth.user').role_name === 'superadministrator'"
-       to="users"
+       to="/users"
        class="w-1/6 text-white  text-white-500 border-0 py-2 px-8  rounded text-lg">
        All Members <fa icon="users"/>
     </NuxtLink> 
