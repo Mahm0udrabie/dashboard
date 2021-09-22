@@ -282,7 +282,6 @@ export default {
   methods: {
        register() {
          if(this.isAbleToRegister) {
-                this.toaster('success', 'You are logged in!')
            this.$axios.post('register', { 
           name: this.name,
           email: this.email,
@@ -311,7 +310,7 @@ export default {
 
            }
          } else {
-           this.toaster('info', 'Not able to register before '+ this.register_date)
+           this.toaster('info', 'Not able to register')
          }
     },
     config() {
@@ -323,7 +322,7 @@ export default {
       today = yyyy + '-' + mm + '-' + dd
       this.$axios.get('/get-configurations').then((response) => {
         this.configurations = response.data.data;
-        if(this.configurations.register_date > today && !this.configurations.is_able_to_register)
+        if(this.configurations.register_date > today || this.configurations.is_able_to_register === 0)
         this.isAbleToRegister = false;
         this.register_date = this.configurations.register_date;
       })
