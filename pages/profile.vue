@@ -26,7 +26,17 @@
         </div>
         <div class="sm:w-2/3 sm:pl-8 sm:py-8 sm:border-l border-gray-200 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
         <p class="leading-relaxed text-lg mb-4">{{ $store.$storage.getUniversal('auth.user').email}}</p>
-        <p class="text-red-500 bold text-lg mb-4">{{  $store.$storage.getUniversal('auth.user').club}}    </p>
+              <NuxtLink
+              class="text-red-500 bold text-lg mb-4 block"
+                      :to="{
+                      path: 'teams/team',
+                      query: {
+                        id: authUser.club_id,
+                      },
+                    }"
+              >
+              {{  $store.$storage.getUniversal('auth.user').club}}
+              </NuxtLink>
 
           <a class="text-indigo-500 inline-flex items-center">Learn More
             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
@@ -48,11 +58,17 @@ export default {
   name: 'Profile' ,
   middleware: 'authentication',
   data: () => ({
-    
+    authUser: []
   }),
-
+  created() {
+      this.user();
+  },
   methods: {
- 
+    user() {
+      this.$axios.get('/user').then((response)=> {
+        this.authUser = response.data
+      })
+    }
   },
 }
 </script>

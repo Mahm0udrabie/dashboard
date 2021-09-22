@@ -2,6 +2,7 @@
   <div>
     <section class="text-gray-600 body-font">
       <div class="container px-5 py-24 mx-auto">
+        <div v-if="!is_able_to_create_team">
         <div 
         v-if="$store.$storage.getUniversal('auth.user').role_name ==='superadministrator' || $store.$storage.getUniversal('auth.user').role_name ==='administrator'"
         class="container px-5 py-24 mx-auto">
@@ -81,6 +82,7 @@
             </button>
           </div>
         </div>
+        </div>
         <div class="flex flex-wrap -m-4">
                     <div class="flex flex-col text-center w-full mb-12">
             <h1
@@ -131,7 +133,8 @@
                 <h2
                   class="text-lg text-gray-900 font-medium title-font mb-2 ml-5"
                 >
-                  <NuxtLink
+              <NuxtLink
+              
                 :to="{
                   path: 'teams/team',
                   query: {
@@ -145,24 +148,7 @@
               </div>
             </div>
             <div 
-               v-if="$store.$storage.getUniversal('auth.user').role_name ==='superadministrator' "
-            class="flex p-3">
-              <NuxtLink
-                :to="{
-                  path: 'teams/editteam',
-                  query: {
-                    id: team.id,
-                  },
-                }"
-              >
-                <fa icon="edit" class="text-blue-300" />
-              </NuxtLink>
-              <button class="ml-1" @click.prevent="removeTeam(team)">
-                <fa icon="trash" class="text-red-500" />
-              </button>
-            </div>
-            <div 
-               v-if="$store.$storage.getUniversal('auth.user').role_name ==='administrator' && team.user_id === $store.$storage.getUniversal('auth.user').id"
+               v-if="$store.$storage.getUniversal('auth.user').role_name === 'superadministrator' "
             class="flex p-3">
               <NuxtLink
                 :to="{
@@ -193,10 +179,21 @@ export default {
     teams: [],
     competitionId: '',
     name: null,
+    today: '',
+    competition: '',
+    is_able_to_create_team:false
   }),
+ 
   mounted() {
+      let today = new Date()
+      const dd = String(today.getDate()).padStart(2, '0')
+      const mm = String(today.getMonth() + 1).padStart(2, '0')
+      const yyyy = today.getFullYear()
+      today = mm + '-' + dd + '-' + yyyy
+      this.today = yyyy + '-' + mm + '-' + dd
     this.competitionId = this.$route.query.id
     this.clubs()
+    this.competitionStatus();
   },
   methods: {
     clubs() {
@@ -207,6 +204,18 @@ export default {
       } catch (err) {
 
       }
+    },
+    competitionStatus() {
+      this.$axios.get('/competitions/'+ this.competitionId).then((response) =>{
+        this.competition = response.data.data;
+        
+        if(this.competition.end < this.today) {
+          this.is_able_to_create_team= true;
+        }
+        if(this.is_able_to_create_team)
+            this.toaster('info',  this.today);
+
+      })
     },
     addTeam() {
       try {

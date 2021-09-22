@@ -249,7 +249,7 @@
 <script>
 export default {
   name: 'EditTeam',
-  middleware: ['authentication', 'admin', 'normal_admin'],
+  middleware: ['authentication', 'admin'],
   data: () => ({
     members: [],
     teamdId: '',
@@ -311,7 +311,7 @@ this.teamId = this.$route.query.id
             club_id: this.teamId,
           })
           .then((response) => {
-            this.members.unshift(response.data)
+            this.members.unshift(response.data.data)
             this.toaster('success', response.data.status)
           })
           .catch((err) => {
