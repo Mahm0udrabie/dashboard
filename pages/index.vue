@@ -14,12 +14,14 @@
         >
           All competitions     <fa icon="list-alt"  />
         </h2>
+      <div class="flex">
       <NuxtLink
        v-if="$store.$storage.getUniversal('auth.user').role_name === 'superadministrator'"
        to="competitions"
        class="w-1/6 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
        Create New
-       </NuxtLink>        
+       </NuxtLink> 
+       </div>              
       </div>
       <div class="flex flex-wrap -m-4">
         <div v-for="(index, x) in competitions" :key="x" class="p-4 md:w-1/3">
@@ -57,8 +59,16 @@
               </h2>
             </div>
             <div class="flex-grow">
-              <a class="mt-3 text-indigo-500 inline-flex items-center"
-                >Join
+              <NuxtLink 
+              :to="{
+              path: 'teams',
+              query: {
+                id:index.id ,
+                  },
+                }"
+              class="mt-3 text-indigo-500 inline-flex items-center">
+                Join
+
                 <svg
                   fill="none"
                   stroke="currentColor"
@@ -70,7 +80,9 @@
                 >
                   <path d="M5 12h14M12 5l7 7-7 7"></path>
                 </svg>
-              </a>
+              
+              
+              </NuxtLink>
             </div>
           </div>
         </div>

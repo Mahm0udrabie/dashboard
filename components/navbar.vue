@@ -7,6 +7,12 @@
       </svg>
       <span class="ml-3 text-xl">Tailblocks</span>
     </NuxtLink>
+      <NuxtLink
+       v-if="$store.$storage.getUniversal('auth.user').role_name === 'superadministrator'"
+       to="users"
+       class="w-1/6 text-white  text-white-500 border-0 py-2 px-8  rounded text-lg">
+       All Members <fa icon="users"/>
+    </NuxtLink> 
     <nav class="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
       
       <div v-if="!$auth.loggedIn">
@@ -15,17 +21,19 @@
       </div>
     </nav>
     <div v-if="$auth.loggedIn">
-        <a class="mr-5 hover:text-white"><fa icon="user"/> {{ $store.$storage.getUniversal('auth.user').name}}</a>
-      </div>
+        <NuxtLink to="/profile" class="mr-5 hover:text-white"><fa icon="user"/> {{ $store.$storage.getUniversal('auth.user').name}}</NuxtLink>
+    </div>
+    
     <button 
       v-if="$auth.loggedIn" 
       class="inline-flex items-center bg-gray-800 border-0 py-1 px-3 focus:outline-none hover:bg-gray-700 rounded text-base mt-4 md:mt-0"
           @click.prevent="logout"
           title="logout"
       >
-      
+
      <fa icon="sign-out-alt"  />
     </button>
+
   </div>
 </header>
 </template>

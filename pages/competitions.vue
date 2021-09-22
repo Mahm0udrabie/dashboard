@@ -15,11 +15,6 @@
           >
             Add New Competition
           </h1>
-          <p class="lg:w-2/3 mx-auto leading-relaxed text-base">
-            Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical
-            gentrify, subway tile poke farm-to-table. Franzen you probably
-            haven't heard of them man bun deep.
-          </p>
         </div>
         <div
           v-if="is_error"
@@ -81,6 +76,63 @@
               "
             />
           </div>
+          <div class="relative flex-grow w-full">
+            <label for="start" class="leading-7 text-sm text-gray-600"
+              >Start</label
+            >
+            <input
+              v-model="start"
+              id="start"
+              type="date"
+              name="start"
+              class="
+                w-full
+                bg-gray-100 bg-opacity-50
+                rounded
+                border border-gray-300
+                focus:border-indigo-500
+                focus:bg-transparent
+                focus:ring-2 focus:ring-indigo-200
+                text-base
+                outline-none
+                text-gray-700
+                py-1
+                px-3
+                leading-8
+                transition-colors
+                duration-200
+                ease-in-out
+              "
+            />
+          </div>
+          <div class="relative flex-grow w-full">
+            <label for="end" class="leading-7 text-sm text-gray-600">End</label>
+            <input
+              v-model="end"
+              id="end"
+              type="date"
+              name="end"
+              class="
+                w-full
+                bg-gray-100 bg-opacity-50
+                rounded
+                border border-gray-300
+                focus:border-indigo-500
+                focus:bg-transparent
+                focus:ring-2 focus:ring-indigo-200
+                text-base
+                outline-none
+                text-gray-700
+                py-1
+                px-3
+                leading-8
+                transition-colors
+                duration-200
+                ease-in-out
+              "
+            />
+          </div>
+
           <div class="relative flex-grow w-full">
             <label for="status" class="leading-7 text-sm text-gray-600"
               >Status</label
@@ -158,39 +210,26 @@
                   </svg>
                 </div>
                 <h2 class="text-gray-900 title-font font-medium">
-<!--                 
+                  <!--                 
                    :to="{ name: 'competition?id', params: { id: index.id }}"      
                 class="mr-5 hover:text-gray">{{ index.name  }} -->
-                {{ index.name}}
+                  {{ index.name }}
                 </h2>
-                <div 
-              class="ml-40 flex p-3"
-                
-                >
-                  <NuxtLink 
-              
-                          :to="{
-                  path: 'competition',
-                  query: {
-                    id:index.id ,
-                  },
-                }">
-                edit 
-                
-                </NuxtLink>
-                <NuxtLink 
-                class="ml-1"
-                :to="{
-                  path: 'competition',
-                  query: {
-                    id:index.id ,
-                  },
-                }">
-                delete
-                </NuxtLink>
-
+                <div class="flex p-3">
+                  <NuxtLink
+                    :to="{
+                      path: 'competition',
+                      query: {
+                        id: index.id,
+                      },
+                    }"
+                  >
+                    <fa icon="edit" class="text-blue-300" />
+                  </NuxtLink>
+                  <button class="ml-1" @click.prevent="removeCompeition(index)">
+                    <fa icon="trash" class="text-red-500" />
+                  </button>
                 </div>
-              
               </div>
               <!-- <div class="flex-grow">
               <p class="leading-relaxed text-base">
@@ -228,37 +267,64 @@ export default {
     competitions: [],
     name: null,
     status: 1,
+    start: '',
+    end: '',
     is_error: false,
     error: '',
   }),
   created() {
-    this.competition();
+    this.competition()
   },
   methods: {
     async addCompeition() {
-          this.is_error = false
+      let today = new Date()
+      const dd = String(today.getDate()).padStart(2, '0')
+      const mm = String(today.getMonth() + 1).padStart(2, '0')
+      const yyyy = today.getFullYear()
+      today = mm + '-' + dd + '-' + yyyy
+      today = yyyy + '-' + mm + '-' + dd
+      this.is_error = false
+      //   console.log(today);
+      //   console.log(this.start);
+
+      // console.log(this.start <= today);
       try {
         await this.$axios
           .post('/competitions', {
             name: this.name,
+            start: this.start,
+            end: this.end,
             status: this.status,
-          }).then((response) => {
-            this.competitions.unshift(response.data.data);
+          })
+          .then((response) => {
+            if (
+              response.data.data.start <= today &&
+              response.data.data.end >= today
+            )
+              this.competitions.unshift(response.data.data)
           })
           .catch((err) => {
             this.is_error = true
-            this.error = err.response.data.errors.name[0]
+            this.error = err.response.data.message
           })
-            
       } catch (err) {
         console.log(err)
       }
     },
     competition() {
+      this.res = this.$axios.get('/competitions').then((response) => {
+        this.competitions = response.data.data
+      })
+    },
+    removeCompeition(index) {
       this.res = this.$axios
-        .get('http://127.0.0.1:8000/api/competitions')
+        .delete('/competitions/' + index.id + '/delete')
         .then((response) => {
-          this.competitions = response.data.data
+          for (let i = 0; i < this.competitions.length; i++) {
+            if (this.competitions[i] === index) {
+              this.competitions.splice(i, 1)
+            }
+          }
         })
     },
   },

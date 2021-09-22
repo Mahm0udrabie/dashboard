@@ -214,7 +214,6 @@ export default {
             this.$auth.strategy.token.set(res.data.data.token)
             this.$auth.$storage.setUniversal('user', res.data.data, true)
             this.$auth.setUser(res.data.data)
-            
           }
           }).catch((err) => {
             console.log(err);
