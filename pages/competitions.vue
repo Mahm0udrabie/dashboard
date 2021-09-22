@@ -302,10 +302,10 @@ export default {
               response.data.data.end >= today
             )
               this.competitions.unshift(response.data.data)
+            this.toaster('success', response.data.status)
           })
           .catch((err) => {
-            this.is_error = true
-            this.error = err.response.data.message
+            this.toaster('error', err.response.data.message)
           })
       } catch (err) {
         console.log(err)
@@ -325,6 +325,7 @@ export default {
               this.competitions.splice(i, 1)
             }
           }
+          this.toaster('success', response.data.status)
         })
     },
   },

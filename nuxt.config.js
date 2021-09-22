@@ -44,6 +44,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    {src: '~/plugins/SweetAlert2', mode: 'client'}
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -75,6 +76,7 @@ export default {
     '@nuxtjs/auth-next',
     '@nuxtjs/universal-storage',
     '@nuxtjs/fontawesome',
+    'vue-sweetalert2/nuxt'
   ],
 
 

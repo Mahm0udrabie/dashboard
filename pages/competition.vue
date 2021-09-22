@@ -45,22 +45,6 @@
           <div class=" flex flex-col text-center w-full">
               <!-- flex flex-col  w-full mb-12 -->
         <div
-          v-if="is_error"
-          class="
-            bg-red-100
-            border border-red-400
-            text-red-700
-            px-4
-            py-3
-            rounded
-            relative
-          "
-          role="alert"
-        >
-          <strong class="font-bold">Opps! </strong>
-          <span class="block sm:inline">{{ error }}</span>
-        </div>
-        <div
           class="
             flex
             lg:w-2/3
@@ -162,8 +146,6 @@ export default {
     competitionId: '',
     name: null,
     status: 1,
-    is_error: false,
-    error: '',
   }),
   mounted() {
       this.competitionId = this.$route.query.id
@@ -188,10 +170,11 @@ export default {
           this.$axios.post('/competitions/'+this.competitionId+'/update', {
             name: this.name,
             status: this.status,
+          }).then((response)=> {
+            this.toaster('success', response.data.status)
           })
           .catch((err) => {
-            this.is_error = true
-            this.error = err.response.data.errors.name[0]
+          this.toaster('error', err.response.data.message)
           })
     }
   }

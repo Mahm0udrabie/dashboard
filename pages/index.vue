@@ -19,7 +19,7 @@
        v-if="$store.$storage.getUniversal('auth.user').role_name === 'superadministrator'"
        to="competitions"
        class="w-1/6 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-       Create New
+       Competitions <fa icon="cogs" />
        </NuxtLink> 
        </div>              
       </div>

@@ -214,6 +214,7 @@ export default {
             this.$auth.strategy.token.set(res.data.data.token)
             this.$auth.$storage.setUniversal('user', res.data.data, true)
             this.$auth.setUser(res.data.data)
+            this.toaster('success', 'You are logged in!')
           }
           }).catch((err) => {
             console.log(err);

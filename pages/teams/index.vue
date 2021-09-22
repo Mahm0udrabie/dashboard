@@ -14,24 +14,8 @@
                 text-gray-900
               "
             >
-              Add New Team
+              Add New Team 
             </h1>
-          </div>
-          <div
-            v-if="is_error"
-            class="
-              bg-red-100
-              border border-red-400
-              text-red-700
-              px-4
-              py-3
-              rounded
-              relative
-            "
-            role="alert"
-          >
-            <strong class="font-bold">Opps! </strong>
-            <span class="block sm:inline">{{ error }}</span>
           </div>
           <div
             class="
@@ -134,9 +118,6 @@
                   {{ team.name }}
                 </h2>
               </div>
-              <p class="leading-relaxed text-base">
-                competition: {{ team.competition }}
-              </p>
             </div>
             <div class="flex p-3">
               <NuxtLink
@@ -168,8 +149,6 @@ export default {
     teams: [],
     competitionId: '',
     name: null,
-    is_error: false,
-    error: ''
   }),
   mounted() {
     this.competitionId = this.$route.query.id
@@ -178,7 +157,7 @@ export default {
   methods: {
     clubs() {
       try {
-        this.$axios.get('/clubs').then((response) => {
+        this.$axios.get('/clubs/competitions/'+ this.competitionId).then((response) => {
           this.teams = response.data.data
         })
       } catch (err) {
@@ -196,9 +175,7 @@ export default {
             this.teams.unshift(response.data.data)
           })
           .catch((err) => {
-            this.is_error = true
-            this.error = err.response.data.message
-
+            this.toaster('error', err.response.data.status)
             console.log(err)
           })
       } catch (err) {}

@@ -49,6 +49,7 @@ export default {
           this.$auth.$storage.setUniversal('user', null, false)
          this.$auth.setUser(null)
         this.$router.push('/login')
+        this.toaster('info', 'You are logged out!')
       });
     },
   },
