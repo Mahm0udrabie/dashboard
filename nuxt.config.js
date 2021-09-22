@@ -83,7 +83,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'https://shrouded-spire-95079.herokuapp.com//api'
+    baseURL: 'https://shrouded-spire-95079.herokuapp.com/api'
     // baseURL: 'http://127.0.0.1:8000/api'
   },
 
