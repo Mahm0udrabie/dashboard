@@ -26,8 +26,8 @@
               >Register date <fa icon="table"/></label
             >
             <input
-              v-model="register_date"
               id="register_date"
+              v-model="register_date"
               type="date"
               name="register_date"
               class="
@@ -111,12 +111,12 @@
                 
                 <div class="flex-grow">
                     <p class="leading-relaxed text-base">{{ team.competition}}</p>
-                    <button v-if="team.status === 0"  class="mt-3 mr-2 text-green-500 inline-flex items-center"
+                    <button v-if="team.status == 0 "  class="mt-3 mr-2 text-green-500 inline-flex items-center"
                     @click.prevent="updateStatus(team, 1)"
                     >
                         <fa icon="check" class="mr-3" />  Active
                     </button>    
-                    <button v-if="team.status === 1"  class="mt-3 text-red-500 inline-flex items-center"
+                    <button v-if="team.status == 1 "  class="mt-3 text-red-500 inline-flex items-center"
                     @click.prevent="updateStatus(team, 0)"
                     >
                         <fa  icon="power-off" class="mr-3" />  Draft
