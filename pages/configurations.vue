@@ -114,12 +114,12 @@
                     <button v-if="team.status === 0"  class="mt-3 mr-2 text-green-500 inline-flex items-center"
                     @click.prevent="updateStatus(team, 1)"
                     >
-                        <fa icon="check" class="mr-3" />  Active
+                          Active
                     </button>    
                     <button v-if="team.status === 1"  class="mt-3 text-red-500 inline-flex items-center"
                     @click.prevent="updateStatus(team, 0)"
                     >
-                        <fa  icon="power-off" class="mr-3" />  Draft
+                         Draft
                     </button>    
                 </div>
                 </div>
