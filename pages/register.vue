@@ -273,7 +273,7 @@ export default {
     email: null,
     password: null,
     password_confirmation: null,
-    isAbleToRegister: true,
+    isAbleToRegister: false,
     configurations : []
   }),
   created() {
@@ -322,9 +322,13 @@ export default {
       today = yyyy + '-' + mm + '-' + dd
       this.$axios.get('/get-configurations').then((response) => {
         this.configurations = response.data.data;
-        if(this.configurations.register_date > today || this.configurations.is_able_to_register === 0)
-        this.isAbleToRegister = false;
+        if(this.configurations.register_date > today || this.configurations.is_able_to_register === 0){
+          this.isAbleToRegister = false;
         this.register_date = this.configurations.register_date;
+        } else {
+          this.isAbleToRegister = true;
+        }
+        
       })
     }
   },
