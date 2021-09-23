@@ -287,11 +287,10 @@ export default {
           email: this.email,
           password: this.password,
           password_confirmation: this.password_confirmation,
-           }).catch((error) => {
-               console.log(error)
-                this.toaster('error', error.response.data.message)
            })
-           try {
+           .then((response) => {
+                this.toaster('success', response.data.message)
+          try {
             this.$auth.loginWith('local', { data: {
             email: this.email,
             password: this.password,
@@ -309,6 +308,14 @@ export default {
            } catch (err) {
 
            }
+
+           })
+           .catch((error) => {
+               console.log(error)
+                this.toaster('error', error.response.data.message)
+           })
+
+
          } else {
            this.toaster('info', 'Not able to register')
          }
