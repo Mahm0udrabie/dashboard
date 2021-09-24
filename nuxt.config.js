@@ -22,7 +22,7 @@ export default {
 
   components: true,
   middleware: ['auth'],
-  target: 'static',
+  // target: 'static',
 
 
 
