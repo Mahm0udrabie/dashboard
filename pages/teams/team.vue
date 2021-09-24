@@ -193,8 +193,7 @@
               />
               <div class="flex-grow">
                 <h2 class="text-gray-900 title-font font-medium">
-                  {{ member.name }} {{ team.user_id}}  {{ member.id}} {{ $store.$storage.getUniversal('auth.user').id }}
-                </h2>
+                  {{ member.name }} 
                 <p class="text-gray-500">{{ member.role_name }}</p>
                 <p class="text-gray-500">{{ member.email }}</p>
         <!-- v-if="$store.$storage.getUniversal('auth.user').role_name === 'superadministrator' || $store.$storage.getUniversal('auth.user').name !== member.name && member.name === team.user_id" -->
